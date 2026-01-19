@@ -16,6 +16,12 @@ export interface Coupon {
   expiry: string;
   category: string;
   image: string;
+  originalPrice?: number;
+  price?: number;
+  rating?: number;
+  reviews?: number;
+  location?: string;
+  soldCount?: number;
 }
 
 export interface Promotion {
@@ -61,7 +67,13 @@ export const COUPONS: Coupon[] = [
     influencerId: '1',
     expiry: '2024-08-31',
     category: 'Fashion',
-    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop',
+    originalPrice: 100,
+    price: 49.99,
+    rating: 4.8,
+    reviews: 1240,
+    location: 'Online',
+    soldCount: 5000
   },
   {
     id: 'c2',
@@ -73,7 +85,13 @@ export const COUPONS: Coupon[] = [
     influencerId: '1',
     expiry: '2024-06-30',
     category: 'Food',
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop',
+    originalPrice: 15.00,
+    price: 8.50,
+    rating: 4.5,
+    reviews: 3200,
+    location: 'Downtown, NY',
+    soldCount: 15000
   },
   {
     id: 'c3',
@@ -85,7 +103,31 @@ export const COUPONS: Coupon[] = [
     influencerId: '1',
     expiry: '2024-12-31',
     category: 'Health',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop',
+    originalPrice: 500,
+    price: 399,
+    rating: 4.9,
+    reviews: 850,
+    location: 'Chicago Loop',
+    soldCount: 200
+  },
+  {
+    id: 'c4',
+    title: 'Luxury Spa Day Package',
+    description: 'Full day access to spa facilities including massage.',
+    code: 'SPA30',
+    discount: '30%',
+    brand: 'Bliss Spa',
+    influencerId: '1',
+    expiry: '2024-10-15',
+    category: 'Beauty',
+    image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=2070&auto=format&fit=crop',
+    originalPrice: 250,
+    price: 175,
+    rating: 4.7,
+    reviews: 450,
+    location: 'Beverly Hills',
+    soldCount: 890
   }
 ];
 

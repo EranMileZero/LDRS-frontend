@@ -5,7 +5,6 @@ import RootLayout from "./layouts/RootLayout";
 import InfluencerLayout from "./layouts/InfluencerLayout";
 import ConsumerLayout from "./layouts/ConsumerLayout";
 import AdminLayout from "./layouts/AdminLayout";
-import HomePage from "./pages/auth/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterSelection from "./pages/auth/RegisterSelection";
 import InfluencerRegister from "./pages/auth/InfluencerRegister";
@@ -19,7 +18,7 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="/" element={<RootLayout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<ConsumerMarketplace />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register">
             <Route index element={<RegisterSelection />} />

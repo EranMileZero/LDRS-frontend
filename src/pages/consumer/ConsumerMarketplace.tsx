@@ -1,16 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import { COUPONS } from "@/lib/mockData";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Send } from "lucide-react";
+import { Heart, Star, ChevronRight, MapPin, Tag, Send, MessageCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -19,93 +14,173 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useTranslation } from "react-i18next";
 
 export default function ConsumerMarketplace() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleActionClick = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      e.stopPropagation();
+      navigate('/login');
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      {/* Search and Filter */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">{t('marketplace.title')}</h1>
-        <div className="flex flex-1 gap-4 md:max-w-md">
-          <div className="relative flex-1">
-            <Search className="absolute start-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={t('marketplace.search_placeholder')}
-              className="ps-8"
-            />
-          </div>
-          <Select defaultValue="all">
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder={t('marketplace.category')} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{t('marketplace.all_categories')}</SelectItem>
-              <SelectItem value="fashion">{t('marketplace.fashion')}</SelectItem>
-              <SelectItem value="food">{t('marketplace.food')}</SelectItem>
-              <SelectItem value="health">{t('marketplace.health')}</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+    <div className="flex flex-col">
+       {/* Hero Section */}
+       <div className="bg-slate-100 py-8 md:py-12 px-4 mb-8">
+           <div className="container mx-auto">
+                <div className="bg-white rounded-lg shadow-sm p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div className="space-y-4 max-w-xl">
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground">
+                            New Year, New Me
+                        </h2>
+                        <p className="text-lg text-muted-foreground">
+                            Facials, hair, nails, and more - now up to 30% off! Use code GLOWUP.
+                        </p>
+                        <Button size="lg" className="rounded-full px-8 text-base bg-foreground text-background hover:bg-black/80">
+                            Check it out <ChevronRight className="ml-2 h-4 w-4" />
+                        </Button>
+                    </div>
+                    <div className="hidden md:block relative w-64 h-64 md:w-80 md:h-80">
+                         <img
+                            src="https://images.unsplash.com/photo-1512690459411-b9245aed8ad6?q=80&w=2080&auto=format&fit=crop"
+                            alt="Spa"
+                            className="rounded-full object-cover w-full h-full shadow-lg"
+                         />
+                    </div>
+                </div>
+           </div>
+       </div>
 
-      {/* Coupon Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {COUPONS.map((coupon) => (
-          <Card key={coupon.id} className="overflow-hidden flex flex-col">
-            <div className="aspect-video w-full overflow-hidden">
-              <img
-                src={coupon.image}
-                alt={coupon.title}
-                className="h-full w-full object-cover transition-all hover:scale-105"
-              />
-            </div>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Badge variant="outline">{coupon.category}</Badge>
-                <span className="text-sm text-muted-foreground">{coupon.brand}</span>
+       {/* Main Content */}
+       <div className="container mx-auto px-4 pb-20 space-y-10">
+          
+          {/* Section 1: Trending */}
+          <div className="space-y-6">
+              <div className="flex items-center gap-2">
+                 <h2 className="text-2xl font-bold text-foreground">Trending in Chicago</h2>
+                 <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+                    <ChevronRight className="h-5 w-5 rotate-90" />
+                 </Button>
               </div>
-              <CardTitle className="line-clamp-1">{coupon.title}</CardTitle>
-              <CardDescription className="line-clamp-2">
-                {coupon.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1">
-               <div className="text-2xl font-bold text-primary">{coupon.discount}</div>
-            </CardContent>
-            <CardFooter>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="w-full">{t('marketplace.contact_influencer')}</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>{t('marketplace.chat_title', { brand: coupon.brand })}</DialogTitle>
-                  </DialogHeader>
-                  <div className="flex flex-col h-[300px]">
-                      <ScrollArea className="flex-1 p-4 border rounded-md mb-4">
-                          <div className="space-y-4">
-                              <div className="flex justify-start">
-                                  <div className="bg-muted text-muted-foreground rounded-lg px-3 py-2 text-sm max-w-[80%]">
-                                      Hello! How can I help you with the {coupon.title} offer?
-                                  </div>
-                              </div>
-                          </div>
-                      </ScrollArea>
-                      <div className="flex gap-2">
-                          <Input placeholder={t('common.type_message')} className="flex-1" />
-                          <Button size="icon"><Send className="h-4 w-4" /></Button>
-                      </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                 {COUPONS.map((coupon) => (
+                    <Dialog key={coupon.id}>
+                        <DialogTrigger asChild onClick={handleActionClick}>
+                            <div className="group cursor-pointer flex flex-col gap-2">
+                                {/* Card Image Wrapper */}
+                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md bg-muted">
+                                    <img
+                                        src={coupon.image}
+                                        alt={coupon.title}
+                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    {/* Badge Overlay */}
+                                    <div className="absolute top-3 left-3">
+                                        <Badge className="bg-white/90 text-foreground hover:bg-white flex items-center gap-1 shadow-sm border-0 font-medium">
+                                            <Tag className="h-3 w-3 fill-rose-500 text-rose-500" />
+                                            Popular Gift
+                                        </Badge>
+                                    </div>
+                                    {/* Heart Icon */}
+                                    <div className="absolute top-3 right-3">
+                                         <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/80 hover:bg-white text-muted-foreground hover:text-red-500 transition-colors" onClick={(e) => { e.stopPropagation(); /* Add to favorites logic */ }}>
+                                            <Heart className="h-5 w-5" />
+                                        </Button>
+                                    </div>
+                                    
+                                    {/* Chat Overlay on Hover */}
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                         <div className="bg-white text-black px-4 py-2 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                             <MessageCircle className="h-4 w-4" />
+                                             Chat with Influencer
+                                         </div>
+                                    </div>
+                                </div>
+
+                                {/* Card Content */}
+                                <div className="space-y-1">
+                                    <div className="flex justify-between items-start">
+                                        <h3 className="font-bold text-base leading-tight group-hover:underline decoration-2 underline-offset-4 decoration-foreground/30 line-clamp-2">
+                                            {coupon.brand}: {coupon.title}
+                                        </h3>
+                                    </div>
+                                    
+                                    <div className="flex items-center text-xs text-muted-foreground gap-1">
+                                        <MapPin className="h-3 w-3" />
+                                        <span>{coupon.location || 'Nearby'}</span>
+                                        <span>•</span>
+                                        <span>{((coupon.location?.length || 0) / 2).toFixed(1)} mi</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-1">
+                                        <div className="flex text-amber-400">
+                                            <Star className="h-3 w-3 fill-current" />
+                                            <Star className="h-3 w-3 fill-current" />
+                                            <Star className="h-3 w-3 fill-current" />
+                                            <Star className="h-3 w-3 fill-current" />
+                                            <Star className="h-3 w-3 fill-current text-muted/30" />
+                                        </div>
+                                        <span className="text-xs text-muted-foreground">
+                                            {coupon.rating || 4.5} ({coupon.reviews || 100})
+                                        </span>
+                                    </div>
+
+                                    <div className="pt-1 flex items-baseline gap-2">
+                                        {coupon.originalPrice && (
+                                            <span className="text-sm text-muted-foreground line-through decoration-slate-400">
+                                                ${coupon.originalPrice}
+                                            </span>
+                                        )}
+                                        <span className="text-lg font-bold text-green-600">
+                                            ${coupon.price || coupon.discount}
+                                        </span>
+                                        {coupon.originalPrice && coupon.price && (
+                                            <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-100 border-0 text-xs font-bold rounded px-1.5">
+                                                -{Math.round(((coupon.originalPrice - coupon.price) / coupon.originalPrice) * 100)}%
+                                            </Badge>
+                                        )}
+                                    </div>
+                                    
+                                    {coupon.soldCount && (
+                                        <p className="text-xs text-muted-foreground">
+                                            {coupon.soldCount.toLocaleString()}+ bought
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                                <DialogTitle>{t('marketplace.chat_title', { brand: coupon.brand })}</DialogTitle>
+                            </DialogHeader>
+                            <div className="flex flex-col h-[400px]">
+                                <ScrollArea className="flex-1 p-4 border rounded-md mb-4 bg-slate-50">
+                                    <div className="space-y-4">
+                                        <div className="flex justify-start">
+                                            <div className="bg-white border text-foreground rounded-lg rounded-tl-none px-3 py-2 text-sm max-w-[80%] shadow-sm">
+                                                <p className="font-semibold text-xs text-muted-foreground mb-1">{coupon.brand}</p>
+                                                Hello! How can I help you with the {coupon.title} offer?
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ScrollArea>
+                                <div className="flex gap-2">
+                                    <Input placeholder={t('common.type_message')} className="flex-1" />
+                                    <Button size="icon" className="rounded-full"><Send className="h-4 w-4" /></Button>
+                                </div>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                 ))}
+              </div>
+          </div>
+       </div>
     </div>
   );
 }
