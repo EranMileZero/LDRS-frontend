@@ -18,7 +18,10 @@
     "delete": "Delete",
     "actions": "Actions",
     "search": "Search",
-    "type_message": "Type your message..."
+    "type_message": "Type your message...",
+    "my_account": "My Account",
+    "profile": "Profile",
+    "orders": "My Orders"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -59,7 +62,16 @@
     "food": "Food",
     "health": "Health",
     "contact_influencer": "Chat with Influencer",
-    "chat_title": "Chat with {{brand}}"
+    "chat_title": "Chat with {{brand}}",
+    "featured": "Featured",
+    "beauty_spas": "Beauty & Spas",
+    "things_to_do": "Things To Do",
+    "gifts": "Gifts",
+    "food_drink": "Food & Drink",
+    "local": "Local",
+    "travel": "Travel",
+    "goods": "Goods",
+    "coupons": "Coupons"
   },
   "admin": {
     "title": "Admin Overview",
@@ -135,7 +147,8 @@
     "registering": "Registering...",
     "register_btn": "Create Account",
     "consumer_reg_title": "Consumer Registration",
-    "consumer_reg_desc": "Create your account to start shopping."
+    "consumer_reg_desc": "Create your account to start shopping.",
+    "logout": "Log out"
   },
   "niche": {
     "fashion": "Fashion",
