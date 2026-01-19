@@ -1,4 +1,4 @@
-import { CHATS } from "@/lib/mockData";
+import { CHATS, MESSAGES, USERS, COUPONS } from "@/lib/mockData";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,9 +8,31 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function Chat() {
-  const [selectedChatId, setSelectedChatId] = useState(CHATS[0].id);
+  const [selectedChatId, setSelectedChatId] = useState<string | undefined>(CHATS[0]?.id);
   const selectedChat = CHATS.find(c => c.id === selectedChatId);
+  
+  // Get messages for the selected chat
+  const chatMessages = selectedChat 
+    ? MESSAGES.filter(m => m.chatId === selectedChat.id).sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime())
+    : [];
+
   const { t } = useTranslation();
+
+  // Helper to get other participant details (assuming we are '1' - Influencer)
+  const getChatDetails = (chat: typeof CHATS[0]) => {
+    const consumer = USERS.find(u => u.id === chat.consumerId);
+    const coupon = COUPONS.find(c => c.id === chat.couponId);
+    // Find the last message for this chat
+    const lastMsg = MESSAGES.filter(m => m.chatId === chat.id)
+      .sort((a, b) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime())[0];
+      
+    return {
+      name: consumer?.name || 'Unknown User',
+      couponTitle: coupon?.title || 'Unknown Coupon',
+      lastMessage: lastMsg?.text || '',
+      lastMessageTime: lastMsg?.sentAt ? new Date(lastMsg.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''
+    };
+  };
 
   return (
     <div className="flex h-[calc(100vh-8rem)] flex-col rounded-xl border bg-card text-card-foreground shadow md:flex-row">
@@ -24,29 +46,32 @@ export default function Chat() {
         </div>
         <ScrollArea className="flex-1">
           <div className="flex flex-col gap-2 p-2">
-            {CHATS.map((chat) => (
-              <button
-                key={chat.id}
-                onClick={() => setSelectedChatId(chat.id)}
-                className={`flex items-center gap-3 rounded-lg p-3 text-start text-sm transition-all hover:bg-accent ${
-                  selectedChatId === chat.id ? "bg-accent" : ""
-                }`}
-              >
-                <Avatar>
-                  <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col gap-1 overflow-hidden">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold">Bob Consumer</span>
-                    <span className="text-xs text-muted-foreground">10:06 AM</span>
+            {CHATS.map((chat) => {
+              const details = getChatDetails(chat);
+              return (
+                <button
+                  key={chat.id}
+                  onClick={() => setSelectedChatId(chat.id)}
+                  className={`flex items-center gap-3 rounded-lg p-3 text-start text-sm transition-all hover:bg-accent ${
+                    selectedChatId === chat.id ? "bg-accent" : ""
+                  }`}
+                >
+                  <Avatar>
+                    <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+                    <AvatarFallback>{details.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col gap-1 overflow-hidden w-full">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold">{details.name}</span>
+                      <span className="text-xs text-muted-foreground">{details.lastMessageTime}</span>
+                    </div>
+                    <span className="line-clamp-1 text-xs text-muted-foreground">
+                      {details.lastMessage}
+                    </span>
                   </div>
-                  <span className="line-clamp-1 text-xs text-muted-foreground">
-                    Awesome, thanks!
-                  </span>
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </ScrollArea>
       </div>
@@ -57,16 +82,16 @@ export default function Chat() {
           <>
             <div className="flex items-center gap-3 border-b p-4">
                <Avatar>
-                  <AvatarFallback>BC</AvatarFallback>
+                  <AvatarFallback>{getChatDetails(selectedChat).name.substring(0, 2).toUpperCase()}</AvatarFallback>
                </Avatar>
                <div>
-                  <h3 className="font-semibold">Bob Consumer</h3>
-                  <p className="text-xs text-muted-foreground">Re: 50% Off Summer Collection</p>
+                  <h3 className="font-semibold">{getChatDetails(selectedChat).name}</h3>
+                  <p className="text-xs text-muted-foreground">Re: {getChatDetails(selectedChat).couponTitle}</p>
                </div>
             </div>
             <ScrollArea className="flex-1 p-4">
               <div className="flex flex-col gap-4">
-                {selectedChat.messages.map((msg) => {
+                {chatMessages.map((msg) => {
                   const isMe = msg.senderId === '1'; // Mock logged in user
                   return (
                     <div

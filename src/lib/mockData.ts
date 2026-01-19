@@ -1,10 +1,56 @@
-export const USERS = [
+export interface User {
+  id: string;
+  name: string;
+  role: 'consumer' | 'influencer' | 'admin';
+  email: string;
+}
+
+export interface Coupon {
+  id: string;
+  title: string;
+  description: string;
+  code: string;
+  discount: string;
+  brand: string;
+  influencerId: string;
+  expiry: string;
+  category: string;
+  image: string;
+}
+
+export interface Promotion {
+  id: string;
+  name: string;
+  status: 'Active' | 'Ended';
+  reach: number;
+  conversions: number;
+  revenue: number;
+  coupons: string[];
+}
+
+export interface Chat {
+  id: string;
+  couponId: string;
+  consumerId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Message {
+  id: string;
+  chatId: string;
+  senderId: string;
+  text: string;
+  sentAt: string;
+}
+
+export const USERS: User[] = [
   { id: '1', name: 'Alice Influencer', role: 'influencer', email: 'alice@example.com' },
   { id: '2', name: 'Bob Consumer', role: 'consumer', email: 'bob@example.com' },
   { id: '3', name: 'Charlie Admin', role: 'admin', email: 'admin@ldrs.com' },
 ];
 
-export const COUPONS = [
+export const COUPONS: Coupon[] = [
   {
     id: 'c1',
     title: '50% Off Summer Collection',
@@ -43,7 +89,7 @@ export const COUPONS = [
   }
 ];
 
-export const PROMOTIONS = [
+export const PROMOTIONS: Promotion[] = [
   {
     id: 'p1',
     name: 'Summer Campaign',
@@ -64,15 +110,18 @@ export const PROMOTIONS = [
   }
 ];
 
-export const CHATS = [
+export const CHATS: Chat[] = [
   {
     id: 'chat1',
-    participants: ['1', '2'], // Influencer, Consumer
     couponId: 'c1',
-    messages: [
-      { id: 'm1', senderId: '2', text: 'Hi, does this coupon work for online orders too?', timestamp: '2024-05-20T10:00:00Z' },
-      { id: 'm2', senderId: '1', text: 'Yes! Just enter the code at checkout.', timestamp: '2024-05-20T10:05:00Z' },
-      { id: 'm3', senderId: '2', text: 'Awesome, thanks!', timestamp: '2024-05-20T10:06:00Z' }
-    ]
+    consumerId: '2',
+    createdAt: '2024-05-20T10:00:00Z',
+    updatedAt: '2024-05-20T10:06:00Z'
   }
+];
+
+export const MESSAGES: Message[] = [
+  { id: 'm1', chatId: 'chat1', senderId: '2', text: 'Hi, does this coupon work for online orders too?', sentAt: '2024-05-20T10:00:00Z' },
+  { id: 'm2', chatId: 'chat1', senderId: '1', text: 'Yes! Just enter the code at checkout.', sentAt: '2024-05-20T10:05:00Z' },
+  { id: 'm3', chatId: 'chat1', senderId: '2', text: 'Awesome, thanks!', sentAt: '2024-05-20T10:06:00Z' }
 ];
