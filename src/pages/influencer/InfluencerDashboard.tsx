@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PROMOTIONS } from "@/lib/mockData";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { DollarSign, Users, MousePointerClick, TrendingUp, ArrowUpRight, Activity } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DollarSign, Users, MousePointerClick, ArrowUpRight, Activity } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default function InfluencerDashboard() {
   const totalReach = PROMOTIONS.reduce((acc, curr) => acc + curr.reach, 0);
@@ -150,7 +150,7 @@ export default function InfluencerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-8">
-              {PROMOTIONS.map((promo, index) => (
+              {PROMOTIONS.map((promo) => (
                 <div className="flex items-center group" key={promo.id}>
                   <Avatar className="h-9 w-9">
                     <AvatarFallback className="bg-primary/10 text-primary font-bold">

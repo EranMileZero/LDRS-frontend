@@ -1,7 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Megaphone, MessageSquare, Bell, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { LayoutDashboard, Megaphone, MessageSquare } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const sidebarItems = [
