@@ -2,22 +2,24 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { LayoutDashboard, Megaphone, MessageSquare } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslation } from "react-i18next";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/influencer" },
-  { icon: Megaphone, label: "Campaigns", href: "/influencer/campaigns" },
-  { icon: MessageSquare, label: "Chat", href: "/influencer/chat" },
+  { icon: LayoutDashboard, label: "sidebar.dashboard", href: "/influencer" },
+  { icon: Megaphone, label: "sidebar.campaigns", href: "/influencer/campaigns" },
+  { icon: MessageSquare, label: "sidebar.chat", href: "/influencer/chat" },
 ];
 
 export default function InfluencerLayout() {
   const location = useLocation();
+  const { t } = useTranslation();
 
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)]">
-      <aside className="w-64 border-r bg-slate-50/50 hidden md:flex flex-col">
+      <aside className="w-64 border-e bg-slate-50/50 hidden md:flex flex-col">
         <div className="flex flex-col gap-2 p-4 flex-1">
           <div className="mb-6 px-2 py-2">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">Menu</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">{t('sidebar.menu')}</h2>
           </div>
           {sidebarItems.map((item) => {
             const isActive = location.pathname === item.href;
@@ -33,7 +35,7 @@ export default function InfluencerLayout() {
                 )}
               >
                 <item.icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-muted-foreground")} />
-                {item.label}
+                {t(item.label)}
               </Link>
             );
           })}
@@ -58,7 +60,7 @@ export default function InfluencerLayout() {
       <main className="flex-1 bg-muted/10">
         <div className="container p-6 md:p-8 max-w-7xl mx-auto space-y-8">
              <header className="flex items-center justify-between pb-4 border-b md:hidden">
-                 <h1 className="text-xl font-bold">Influencer</h1>
+                 <h1 className="text-xl font-bold">{t('nav.influencer')}</h1>
              </header>
             <Outlet />
         </div>

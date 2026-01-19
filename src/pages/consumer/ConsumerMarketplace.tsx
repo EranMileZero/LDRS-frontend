@@ -2,7 +2,7 @@ import { COUPONS } from "@/lib/mockData";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search } from "lucide-react";
+import { Search, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,31 +11,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslation } from "react-i18next";
 
 export default function ConsumerMarketplace() {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       {/* Search and Filter */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Marketplace</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('marketplace.title')}</h1>
         <div className="flex flex-1 gap-4 md:max-w-md">
           <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute start-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search coupons..."
-              className="pl-8"
+              placeholder={t('marketplace.search_placeholder')}
+              className="ps-8"
             />
           </div>
           <Select defaultValue="all">
             <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Category" />
+              <SelectValue placeholder={t('marketplace.category')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              <SelectItem value="fashion">Fashion</SelectItem>
-              <SelectItem value="food">Food</SelectItem>
-              <SelectItem value="health">Health</SelectItem>
+              <SelectItem value="all">{t('marketplace.all_categories')}</SelectItem>
+              <SelectItem value="fashion">{t('marketplace.fashion')}</SelectItem>
+              <SelectItem value="food">{t('marketplace.food')}</SelectItem>
+              <SelectItem value="health">{t('marketplace.health')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -66,7 +77,31 @@ export default function ConsumerMarketplace() {
                <div className="text-2xl font-bold text-primary">{coupon.discount}</div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Get Coupon</Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="w-full">{t('marketplace.contact_influencer')}</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>{t('marketplace.chat_title', { brand: coupon.brand })}</DialogTitle>
+                  </DialogHeader>
+                  <div className="flex flex-col h-[300px]">
+                      <ScrollArea className="flex-1 p-4 border rounded-md mb-4">
+                          <div className="space-y-4">
+                              <div className="flex justify-start">
+                                  <div className="bg-muted text-muted-foreground rounded-lg px-3 py-2 text-sm max-w-[80%]">
+                                      Hello! How can I help you with the {coupon.title} offer?
+                                  </div>
+                              </div>
+                          </div>
+                      </ScrollArea>
+                      <div className="flex gap-2">
+                          <Input placeholder={t('common.type_message')} className="flex-1" />
+                          <Button size="icon"><Send className="h-4 w-4" /></Button>
+                      </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </CardFooter>
           </Card>
         ))}

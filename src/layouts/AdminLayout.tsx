@@ -1,21 +1,23 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { LayoutDashboard, Users, Settings } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Overview", href: "/admin" },
-  { icon: Users, label: "User Management", href: "/admin/users" },
-  { icon: Settings, label: "Settings", href: "/admin/settings" },
+  { icon: LayoutDashboard, label: "admin.sidebar.overview", href: "/admin" },
+  { icon: Users, label: "admin.sidebar.users", href: "/admin/users" },
+  { icon: Settings, label: "admin.sidebar.settings", href: "/admin/settings" },
 ];
 
 export default function AdminLayout() {
   const location = useLocation();
+  const { t } = useTranslation();
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
-      <aside className="w-64 border-r bg-muted/20 hidden md:block">
+      <aside className="w-64 border-e bg-muted/20 hidden md:block">
         <div className="flex flex-col gap-2 p-4">
-          <div className="px-3 py-2 text-xs font-semibold uppercase text-muted-foreground">Admin</div>
+          <div className="px-3 py-2 text-xs font-semibold uppercase text-muted-foreground">{t('admin.sidebar.title')}</div>
           {sidebarItems.map((item) => {
             const isActive = location.pathname === item.href;
             return (
@@ -28,7 +30,7 @@ export default function AdminLayout() {
                 )}
               >
                 <item.icon className="h-4 w-4" />
-                {item.label}
+                {t(item.label)}
               </Link>
             );
           })}
