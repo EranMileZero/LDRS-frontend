@@ -1,0 +1,104 @@
+{
+  "brand": "LDRS",
+  "nav": {
+    "influencer": "Influencer",
+    "consumer": "Consumer",
+    "admin": "Admin"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "campaigns": "Campaigns",
+    "chat": "Chat",
+    "menu": "Menu"
+  },
+  "common": {
+    "create": "Create",
+    "view_details": "View details",
+    "edit": "Edit",
+    "delete": "Delete",
+    "actions": "Actions",
+    "search": "Search",
+    "type_message": "Type your message..."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your campaign performance and earnings.",
+    "stats": {
+      "total_revenue": "Total Revenue",
+      "total_reach": "Total Reach",
+      "conversions": "Conversions",
+      "active_campaigns": "Active Campaigns",
+      "from_last_month": "from last month",
+      "since_last_hour": "since last hour"
+    },
+    "charts": {
+      "revenue_overview": "Revenue Overview",
+      "revenue_desc": "Daily revenue from all active campaigns.",
+      "top_campaigns": "Top Campaigns",
+      "top_desc": "Best performing campaigns by revenue."
+    }
+  },
+  "campaigns": {
+    "title": "Campaigns",
+    "create_btn": "Create Campaign",
+    "table": {
+      "name": "Name",
+      "status": "Status",
+      "reach": "Reach",
+      "conversions": "Conversions",
+      "revenue": "Revenue"
+    },
+    "end_campaign": "End campaign"
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "search_placeholder": "Search coupons...",
+    "category": "Category",
+    "all_categories": "All Categories",
+    "fashion": "Fashion",
+    "food": "Food",
+    "health": "Health",
+    "contact_influencer": "Chat with Influencer",
+    "chat_title": "Chat with {{brand}}"
+  },
+  "admin": {
+    "title": "Admin Overview",
+    "stats": {
+      "total_users": "Total Users",
+      "system_activity": "System Activity",
+      "active_coupons": "Active Coupons",
+      "pending_approvals": "Pending Approvals",
+      "new_today": "new today",
+      "uptime": "Uptime this week",
+      "since_last_hour": "since last hour",
+      "requires_attention": "Requires attention"
+    },
+    "logs": {
+      "title": "Recent System Logs",
+      "user_login": "User Login",
+      "new_coupon": "New Coupon Created",
+      "influencer_app": "Influencer Application"
+    },
+    "top_influencers": "Top Influencers",
+    "sidebar": {
+      "title": "Admin",
+      "overview": "Overview",
+      "users": "User Management",
+      "settings": "Settings"
+    }
+  },
+  "home": {
+    "welcome": "Welcome to LDRS",
+    "subtitle": "The ultimate platform for influencers to manage campaigns and for consumers to discover the best deals.",
+    "influencer_btn": "Influencer",
+    "influencer_desc": "Manage Campaigns",
+    "consumer_btn": "Consumer",
+    "consumer_desc": "Browse Deals",
+    "admin_btn": "Admin",
+    "admin_desc": "Back Office"
+  },
+  "chat": {
+    "search_placeholder": "Search messages...",
+    "select_chat": "Select a chat to start messaging"
+  }
+}

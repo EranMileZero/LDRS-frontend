@@ -18,14 +18,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 export default function Campaigns() {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">Campaigns</h2>
+        <h2 className="text-3xl font-bold tracking-tight">{t('campaigns.title')}</h2>
         <Button>
-          <Plus className="mr-2 h-4 w-4" /> Create Campaign
+          <Plus className="me-2 h-4 w-4" /> {t('campaigns.create_btn')}
         </Button>
       </div>
 
@@ -33,11 +36,11 @@ export default function Campaigns() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Reach</TableHead>
-              <TableHead className="text-right">Conversions</TableHead>
-              <TableHead className="text-right">Revenue</TableHead>
+              <TableHead>{t('campaigns.table.name')}</TableHead>
+              <TableHead>{t('campaigns.table.status')}</TableHead>
+              <TableHead className="text-end">{t('campaigns.table.reach')}</TableHead>
+              <TableHead className="text-end">{t('campaigns.table.conversions')}</TableHead>
+              <TableHead className="text-end">{t('campaigns.table.revenue')}</TableHead>
               <TableHead className="w-[70px]"></TableHead>
             </TableRow>
           </TableHeader>
@@ -50,9 +53,9 @@ export default function Campaigns() {
                     {promo.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-right">{promo.reach.toLocaleString()}</TableCell>
-                <TableCell className="text-right">{promo.conversions}</TableCell>
-                <TableCell className="text-right">${promo.revenue.toLocaleString()}</TableCell>
+                <TableCell className="text-end">{promo.reach.toLocaleString()}</TableCell>
+                <TableCell className="text-end">{promo.conversions}</TableCell>
+                <TableCell className="text-end">${promo.revenue.toLocaleString()}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -62,11 +65,11 @@ export default function Campaigns() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>View details</DropdownMenuItem>
-                      <DropdownMenuItem>Edit campaign</DropdownMenuItem>
+                      <DropdownMenuLabel>{t('common.actions')}</DropdownMenuLabel>
+                      <DropdownMenuItem>{t('common.view_details')}</DropdownMenuItem>
+                      <DropdownMenuItem>{t('common.edit')}</DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-red-600">End campaign</DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">{t('campaigns.end_campaign')}</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

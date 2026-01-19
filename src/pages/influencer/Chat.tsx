@@ -5,19 +5,21 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Search } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Chat() {
   const [selectedChatId, setSelectedChatId] = useState(CHATS[0].id);
   const selectedChat = CHATS.find(c => c.id === selectedChatId);
+  const { t } = useTranslation();
 
   return (
     <div className="flex h-[calc(100vh-8rem)] flex-col rounded-xl border bg-card text-card-foreground shadow md:flex-row">
       {/* Chat Sidebar */}
-      <div className="w-full border-r md:w-80 flex flex-col">
+      <div className="w-full border-e md:w-80 flex flex-col">
         <div className="p-4 border-b">
           <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search messages..." className="pl-8" />
+            <Search className="absolute start-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input placeholder={t('chat.search_placeholder')} className="ps-8" />
           </div>
         </div>
         <ScrollArea className="flex-1">
@@ -26,7 +28,7 @@ export default function Chat() {
               <button
                 key={chat.id}
                 onClick={() => setSelectedChatId(chat.id)}
-                className={`flex items-center gap-3 rounded-lg p-3 text-left text-sm transition-all hover:bg-accent ${
+                className={`flex items-center gap-3 rounded-lg p-3 text-start text-sm transition-all hover:bg-accent ${
                   selectedChatId === chat.id ? "bg-accent" : ""
                 }`}
               >
@@ -87,7 +89,7 @@ export default function Chat() {
             </ScrollArea>
             <div className="p-4 border-t">
               <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-                <Input placeholder="Type your message..." className="flex-1" />
+                <Input placeholder={t('common.type_message')} className="flex-1" />
                 <Button size="icon" type="submit">
                   <Send className="h-4 w-4" />
                 </Button>
@@ -96,7 +98,7 @@ export default function Chat() {
           </>
         ) : (
           <div className="flex flex-1 items-center justify-center text-muted-foreground">
-            Select a chat to start messaging
+            {t('chat.select_chat')}
           </div>
         )}
       </div>

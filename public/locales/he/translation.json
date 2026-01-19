@@ -1,0 +1,104 @@
+{
+  "brand": "LDRS",
+  "nav": {
+    "influencer": "משפיען",
+    "consumer": "צרכן",
+    "admin": "מנהל"
+  },
+  "sidebar": {
+    "dashboard": "לוח בקרה",
+    "campaigns": "קמפיינים",
+    "chat": "צ'אט",
+    "menu": "תפריט"
+  },
+  "common": {
+    "create": "צור",
+    "view_details": "צפה בפרטים",
+    "edit": "ערוך",
+    "delete": "מחק",
+    "actions": "פעולות",
+    "search": "חיפוש",
+    "type_message": "הקלד את ההודעה שלך..."
+  },
+  "dashboard": {
+    "title": "לוח בקרה",
+    "subtitle": "סקירה כללית של ביצועי הקמפיין והרווחים שלך.",
+    "stats": {
+      "total_revenue": "סך ההכנסות",
+      "total_reach": "חשיפה כוללת",
+      "conversions": "המרות",
+      "active_campaigns": "קמפיינים פעילים",
+      "from_last_month": "מהחודש שעבר",
+      "since_last_hour": "בשעה האחרונה"
+    },
+    "charts": {
+      "revenue_overview": "סקירת הכנסות",
+      "revenue_desc": "הכנסה יומית מכל הקמפיינים הפעילים.",
+      "top_campaigns": "קמפיינים מובילים",
+      "top_desc": "הקמפיינים עם הביצועים הטובים ביותר לפי הכנסה."
+    }
+  },
+  "campaigns": {
+    "title": "קמפיינים",
+    "create_btn": "צור קמפיין",
+    "table": {
+      "name": "שם",
+      "status": "סטטוס",
+      "reach": "חשיפה",
+      "conversions": "המרות",
+      "revenue": "הכנסה"
+    },
+    "end_campaign": "סיים קמפיין"
+  },
+  "marketplace": {
+    "title": "זירת מסחר",
+    "search_placeholder": "חפש קופונים...",
+    "category": "קטגוריה",
+    "all_categories": "כל הקטגוריות",
+    "fashion": "אופנה",
+    "food": "אוכל",
+    "health": "בריאות",
+    "contact_influencer": "צ'אט עם המשפיען",
+    "chat_title": "צ'אט עם {{brand}}"
+  },
+  "admin": {
+    "title": "סקירת מנהל",
+    "stats": {
+      "total_users": "סך המשתמשים",
+      "system_activity": "פעילות מערכת",
+      "active_coupons": "קופונים פעילים",
+      "pending_approvals": "ממתינים לאישור",
+      "new_today": "חדשים היום",
+      "uptime": "זמן פעילות השבוע",
+      "since_last_hour": "בשעה האחרונה",
+      "requires_attention": "דורש תשומת לב"
+    },
+    "logs": {
+      "title": "יומני מערכת אחרונים",
+      "user_login": "התחברות משתמש",
+      "new_coupon": "נוצר קופון חדש",
+      "influencer_app": "בקשת משפיען"
+    },
+    "top_influencers": "משפיענים מובילים",
+    "sidebar": {
+      "title": "מנהל",
+      "overview": "סקירה",
+      "users": "ניהול משתמשים",
+      "settings": "הגדרות"
+    }
+  },
+  "home": {
+    "welcome": "ברוכים הבאים ל-LDRS",
+    "subtitle": "הפלטפורמה האולטימטיבית למשפיענים לניהול קמפיינים ולצרכנים לגילוי המבצעים הטובים ביותר.",
+    "influencer_btn": "משפיען",
+    "influencer_desc": "ניהול קמפיינים",
+    "consumer_btn": "צרכן",
+    "consumer_desc": "דפדוף במבצעים",
+    "admin_btn": "מנהל",
+    "admin_desc": "ניהול מערכת"
+  },
+  "chat": {
+    "search_placeholder": "חפש הודעות...",
+    "select_chat": "בחר צ'אט כדי להתחיל בהודעות"
+  }
+}
