@@ -12,6 +12,9 @@ import ConsumerRegister from "./pages/auth/ConsumerRegister";
 import InfluencerDashboard from "./pages/influencer/InfluencerDashboard";
 import ConsumerMarketplace from "./pages/consumer/ConsumerMarketplace";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import Campaigns from "./pages/influencer/Campaigns";
+import Chat from "./pages/influencer/Chat";
+import Users from "./pages/admin/Users";
 
 function App() {
   return (
@@ -33,8 +36,8 @@ function App() {
             </RequireAuth>
           }>
             <Route index element={<InfluencerDashboard />} />
-            <Route path="campaigns" element={<div>Campaigns</div>} />
-            <Route path="chat" element={<div>Influencer Chat</div>} />
+            <Route path="campaigns" element={<Campaigns />} />
+            <Route path="chat" element={<Chat />} />
           </Route>
 
           {/* Consumer Routes */}
@@ -55,7 +58,7 @@ function App() {
             </RequireAuth>
           }>
             <Route index element={<AdminDashboard />} />
-            <Route path="users" element={<div>User Management</div>} />
+            <Route path="users" element={<Users />} />
             <Route path="settings" element={<div>System Settings</div>} />
           </Route>
         </Route>

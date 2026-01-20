@@ -19,6 +19,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 export default function Campaigns() {
   const { t } = useTranslation();
@@ -27,9 +37,38 @@ export default function Campaigns() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">{t('campaigns.title')}</h2>
-        <Button>
-          <Plus className="me-2 h-4 w-4" /> {t('campaigns.create_btn')}
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="me-2 h-4 w-4" /> {t('campaigns.create_btn')}
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>{t('campaigns.create_btn', 'Create Campaign')}</DialogTitle>
+              <DialogDescription>
+                {t('campaigns.create_desc', 'Fill in the details for your new campaign.')}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="name" className="text-end text-sm font-medium col-span-1">
+                  {t('campaigns.table.name', 'Name')}
+                </label>
+                <Input id="name" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label htmlFor="budget" className="text-end text-sm font-medium col-span-1">
+                  {t('campaigns.budget', 'Budget')}
+                </label>
+                <Input id="budget" type="number" className="col-span-3" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">{t('common.create', 'Create')}</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="rounded-md border">

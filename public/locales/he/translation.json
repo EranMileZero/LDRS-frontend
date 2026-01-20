@@ -9,7 +9,8 @@
     "dashboard": "לוח בקרה",
     "campaigns": "קמפיינים",
     "chat": "צ'אט",
-    "menu": "תפריט"
+    "menu": "תפריט",
+    "marketplace": "זירת מסחר"
   },
   "common": {
     "create": "צור",
@@ -18,7 +19,10 @@
     "delete": "מחק",
     "actions": "פעולות",
     "search": "חיפוש",
-    "type_message": "הקלד את ההודעה שלך..."
+    "type_message": "הקלד את ההודעה שלך...",
+    "profile": "פרופיל",
+    "orders": "ההזמנות שלי",
+    "my_account": "החשבון שלי"
   },
   "dashboard": {
     "title": "לוח בקרה",
@@ -41,6 +45,8 @@
   "campaigns": {
     "title": "קמפיינים",
     "create_btn": "צור קמפיין",
+    "create_desc": "מלא את הפרטים לקמפיין החדש שלך.",
+    "budget": "תקציב",
     "table": {
       "name": "שם",
       "status": "סטטוס",
@@ -56,6 +62,15 @@
     "category": "קטגוריה",
     "all_categories": "כל הקטגוריות",
     "fashion": "אופנה",
+    "featured": "מומלצים",
+    "beauty_spas": "יופי וספא",
+    "things_to_do": "אטרקציות",
+    "gifts": "מתנות",
+    "food_drink": "אוכל ושתייה",
+    "local": "מקומי",
+    "travel": "טיולים",
+    "goods": "מוצרים",
+    "coupons": "קופונים",
     "food": "אוכל",
     "health": "בריאות",
     "contact_influencer": "צ'אט עם המשפיען",
@@ -135,7 +150,8 @@
     "registering": "נרשם...",
     "register_btn": "צור חשבון",
     "consumer_reg_title": "הרשמת צרכן",
-    "consumer_reg_desc": "צור את החשבון שלך כדי להתחיל לקנות."
+    "consumer_reg_desc": "צור את החשבון שלך כדי להתחיל לקנות.",
+    "logout": "התנתק"
   },
   "niche": {
     "fashion": "אופנה",

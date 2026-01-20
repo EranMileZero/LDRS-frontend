@@ -41,7 +41,18 @@ export default function LoginPage() {
       // For now, I'll hardcode 'consumer' unless email has 'influencer'.
       
       await login(email);
-      navigate(from, { replace: true });
+
+      let targetPath = from;
+      // If no specific destination was requested, redirect based on role/email
+      if (targetPath === '/') {
+        if (email.includes('admin') || email === 'admin@ldrs.com') {
+            targetPath = '/admin';
+        } else if (email.includes('influencer') || email === 'alice@example.com') {
+            targetPath = '/influencer';
+        }
+      }
+
+      navigate(targetPath, { replace: true });
     } catch (err) {
       setError('Failed to login');
     } finally {
