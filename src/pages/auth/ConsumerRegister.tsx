@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,15 @@ import { useTranslation } from 'react-i18next';
 export default function ConsumerRegister() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+        if (user.role === 'influencer') navigate('/influencer', { replace: true });
+        else if (user.role === 'admin') navigate('/admin', { replace: true });
+        else navigate('/consumer', { replace: true });
+    }
+  }, [user, navigate]);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -32,15 +40,18 @@ export default function ConsumerRegister() {
       await register({
         name: formData.name,
         email: formData.email,
+        password: formData.password,
         role: 'consumer'
       });
-      navigate('/consumer');
+      navigate('/login'); // Redirect to login after registration as automatic login might not be supported
     } catch (err) {
       setError('Failed to register');
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (user) return null;
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">

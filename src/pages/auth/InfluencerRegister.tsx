@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,15 @@ import { useTranslation } from 'react-i18next';
 export default function InfluencerRegister() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+        if (user.role === 'influencer') navigate('/influencer', { replace: true });
+        else if (user.role === 'admin') navigate('/admin', { replace: true });
+        else navigate('/consumer', { replace: true });
+    }
+  }, [user, navigate]);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -40,17 +48,20 @@ export default function InfluencerRegister() {
       await register({
         name: formData.name,
         email: formData.email,
+        password: formData.password,
         role: 'influencer'
       });
       // In a real app, we might save the extra profile fields to a separate profile table
       console.log('Registered influencer with details:', formData);
-      navigate('/influencer');
+      navigate('/login'); // Redirect to login
     } catch (err) {
       setError('Failed to register');
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (user) return null;
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4 my-8">

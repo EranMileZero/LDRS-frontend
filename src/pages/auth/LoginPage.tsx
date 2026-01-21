@@ -10,11 +10,19 @@ export default function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   
   const from = location.state?.from?.pathname || '/';
 
   const [email, setEmail] = useState('');
+
+  // Redirect if already logged in
+  if (user) {
+      if (user.role === 'influencer') navigate('/influencer', { replace: true });
+      else if (user.role === 'admin') navigate('/admin', { replace: true });
+      else navigate('/consumer', { replace: true });
+      return null;
+  }
   const [password, setPassword] = useState(''); // Password not used in mock, but good for UI
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -40,7 +48,7 @@ export default function LoginPage() {
       // Better approach: Update AuthContext to find user by email only.
       // For now, I'll hardcode 'consumer' unless email has 'influencer'.
       
-      await login(email);
+      await login(email, password);
 
       let targetPath = from;
       // If no specific destination was requested, redirect based on role/email
