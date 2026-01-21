@@ -8,8 +8,8 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en', // Fallback to English
-    lng: 'en', // Default language
+    fallbackLng: 'he', // Fallback to English
+    lng: 'he', // Default language
     debug: true,
     interpolation: {
       escapeValue: false,

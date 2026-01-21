@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export function MarketplaceHeader() {
   const { t } = useTranslation();
@@ -55,6 +56,7 @@ export function MarketplaceHeader() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3 md:gap-6">
+            <LanguageSwitcher />
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground hidden sm:flex">
                 <Heart className="h-6 w-6" />
             </Button>
@@ -86,6 +88,21 @@ export function MarketplaceHeader() {
                   <DropdownMenuContent className="w-56" align="end">
                     <DropdownMenuLabel>{t('common.my_account')}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
+                    {user.role === 'admin' && (
+                        <DropdownMenuItem asChild>
+                            <Link to="/admin" className="w-full cursor-pointer font-semibold">
+                                {t('admin.sidebar.title', 'Admin Dashboard')}
+                            </Link>
+                        </DropdownMenuItem>
+                    )}
+                    {user.role === 'influencer' && (
+                        <DropdownMenuItem asChild>
+                            <Link to="/influencer" className="w-full cursor-pointer font-semibold">
+                                {t('sidebar.dashboard', 'Dashboard')}
+                            </Link>
+                        </DropdownMenuItem>
+                    )}
+                    {(user.role === 'admin' || user.role === 'influencer') && <DropdownMenuSeparator />}
                     <DropdownMenuItem>{t('common.profile')}</DropdownMenuItem>
                     <DropdownMenuItem>{t('common.orders')}</DropdownMenuItem>
                     <DropdownMenuSeparator />
