@@ -9,7 +9,8 @@
     "dashboard": "Dashboard",
     "campaigns": "Campaigns",
     "chat": "Chat",
-    "menu": "Menu"
+    "menu": "Menu",
+    "marketplace": "Marketplace"
   },
   "common": {
     "create": "Create",
@@ -44,6 +45,8 @@
   "campaigns": {
     "title": "Campaigns",
     "create_btn": "Create Campaign",
+    "create_desc": "Fill in the details for your new campaign.",
+    "budget": "Budget",
     "table": {
       "name": "Name",
       "status": "Status",

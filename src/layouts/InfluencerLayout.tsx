@@ -1,21 +1,25 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Megaphone, MessageSquare, Menu } from "lucide-react";
+import { LayoutDashboard, Megaphone, MessageSquare, Menu, Store } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useAuth } from "@/context/AuthContext";
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "sidebar.dashboard", href: "/influencer" },
   { icon: Megaphone, label: "sidebar.campaigns", href: "/influencer/campaigns" },
   { icon: MessageSquare, label: "sidebar.chat", href: "/influencer/chat" },
+  { icon: Store, label: "sidebar.marketplace", href: "/" },
 ];
 
 export default function InfluencerLayout() {
   const location = useLocation();
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const SidebarContent = () => (
@@ -54,17 +58,21 @@ export default function InfluencerLayout() {
         })}
       </div>
       
+      <div className="px-6 py-2">
+        <LanguageSwitcher />
+      </div>
+
       {/* User Profile Section in Sidebar */}
       <div className="p-4 mt-auto border-t bg-muted/20">
           <div className="flex items-center gap-3 rounded-lg p-2 hover:bg-muted/50 transition-colors cursor-pointer">
               <Avatar className="h-9 w-9 border-2 border-background">
-                  <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarImage src="/avatars/01.png" alt={user?.name} />
+                  <AvatarFallback>{user?.name?.charAt(0) || 'U'}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col overflow-hidden transition-all">
-                  <p className="text-sm font-semibold leading-none truncate">John Doe</p>
+                  <p className="text-sm font-semibold leading-none truncate">{user?.name || 'User'}</p>
                   <p className="text-xs text-muted-foreground truncate mt-1">
-                      john@example.com
+                      {user?.email}
                   </p>
               </div>
           </div>
@@ -75,12 +83,12 @@ export default function InfluencerLayout() {
   return (
     <div className="flex min-h-screen bg-background">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r bg-card fixed inset-y-0 left-0 z-50">
+      <aside className="hidden md:flex w-64 flex-col border-e bg-card fixed inset-y-0 start-0 z-50">
         <SidebarContent />
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 md:pl-64 flex flex-col min-h-screen transition-all duration-300 ease-in-out">
+      <main className="flex-1 md:ps-64 flex flex-col min-h-screen transition-all duration-300 ease-in-out">
         
         {/* Mobile Header */}
         <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background/95 backdrop-blur px-6 md:hidden supports-[backdrop-filter]:bg-background/60">
@@ -91,7 +99,7 @@ export default function InfluencerLayout() {
                   <span className="sr-only">Toggle navigation menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-64 border-r">
+              <SheetContent side="left" className="p-0 w-64 border-e">
                 <SidebarContent />
               </SheetContent>
             </Sheet>
