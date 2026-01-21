@@ -21,14 +21,6 @@ export default function ConsumerMarketplace() {
   const { coupons } = useMarketplace();
   const navigate = useNavigate();
 
-  const handleActionClick = (e: React.MouseEvent) => {
-    if (!user) {
-      e.preventDefault();
-      e.stopPropagation();
-      navigate('/login');
-    }
-  };
-
   return (
     <div className="flex flex-col">
        {/* Hero Section */}
