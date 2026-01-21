@@ -16,7 +16,15 @@
     "create": "Create",
     "view_details": "View details",
     "edit": "Edit",
+    "save": "Save",
     "delete": "Delete",
+    "remove": "Remove",
+    "link": "Link",
+    "unlink": "Unlink",
+    "link_to_campaign": "Link to Campaign",
+    "manage_coupons": "Manage Coupons",
+    "create_and_link": "Create & Link",
+    "add_coupon": "Add Coupon",
     "actions": "Actions",
     "search": "Search",
     "type_message": "Type your message...",
@@ -47,6 +55,14 @@
     "create_btn": "Create Campaign",
     "create_desc": "Fill in the details for your new campaign.",
     "budget": "Budget",
+    "form": {
+        "description": "Description",
+        "code": "Code",
+        "discount": "Discount",
+        "price": "Price",
+        "expiry": "Expiry Date",
+        "category": "Category"
+    },
     "table": {
       "name": "Name",
       "status": "Status",
@@ -54,7 +70,13 @@
       "conversions": "Conversions",
       "revenue": "Revenue"
     },
-    "end_campaign": "End campaign"
+    "end_campaign": "End campaign",
+    "select_campaign": "Select Campaign",
+    "add_coupon_to_campaign": "Add Coupon to Campaign",
+    "create_coupon_desc": "Create a new coupon for this campaign.",
+    "manage_coupons_desc": "Manage your coupons.",
+    "link_coupon_desc": "Select an existing coupon to add to this campaign.",
+    "create_coupon_title": "Create Coupon"
   },
   "marketplace": {
     "title": "Marketplace",

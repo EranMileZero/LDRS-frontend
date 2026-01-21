@@ -16,7 +16,15 @@
     "create": "צור",
     "view_details": "צפה בפרטים",
     "edit": "ערוך",
+    "save": "שמור",
     "delete": "מחק",
+    "remove": "הסר",
+    "link": "קשר",
+    "unlink": "בטל קישור",
+    "link_to_campaign": "קשר לקמפיין",
+    "manage_coupons": "נהל קופונים",
+    "create_and_link": "צור וקשר",
+    "add_coupon": "הוסף קופון",
     "actions": "פעולות",
     "search": "חיפוש",
     "type_message": "הקלד את ההודעה שלך...",
@@ -47,6 +55,14 @@
     "create_btn": "צור קמפיין",
     "create_desc": "מלא את הפרטים לקמפיין החדש שלך.",
     "budget": "תקציב",
+    "form": {
+        "description": "תיאור",
+        "code": "קוד קופון",
+        "discount": "הנחה",
+        "price": "מחיר",
+        "expiry": "תאריך תפוגה",
+        "category": "קטגוריה"
+    },
     "table": {
       "name": "שם",
       "status": "סטטוס",
@@ -54,7 +70,13 @@
       "conversions": "המרות",
       "revenue": "הכנסה"
     },
-    "end_campaign": "סיים קמפיין"
+    "end_campaign": "סיים קמפיין",
+    "select_campaign": "בחר קמפיין",
+    "add_coupon_to_campaign": "הוסף קופון לקמפיין",
+    "create_coupon_desc": "צור קופון חדש לקמפיין זה.",
+    "manage_coupons_desc": "נהל את הקופונים שלך.",
+    "link_coupon_desc": "בחר קופון קיים להוספה לקמפיין.",
+    "create_coupon_title": "צור קופון"
   },
   "marketplace": {
     "title": "זירת מסחר",

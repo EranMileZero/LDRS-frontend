@@ -1,4 +1,3 @@
-import { USERS } from "@/lib/mockData";
 import {
   Table,
   TableBody,
@@ -8,10 +7,41 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { userService } from "@/services/user.service";
+import { useEffect, useState } from "react";
+import type { UserResponse } from "@/types/api";
 
 export default function Users() {
   const { t } = useTranslation();
+  const [users, setUsers] = useState<UserResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUsers = async () => {
+      try {
+          const data = await userService.getAll();
+          setUsers(data);
+      } catch (error) {
+          console.error("Failed to fetch users", error);
+      } finally {
+          setLoading(false);
+      }
+  };
+
+  useEffect(() => {
+      fetchUsers();
+  }, []);
+
+  const handleDelete = async (id: string) => {
+      if (!confirm(t('common.confirm_delete', 'Are you sure?'))) return;
+      try {
+          await userService.delete(id);
+          fetchUsers();
+      } catch (error) {
+          console.error("Failed to delete user", error);
+      }
+  };
 
   return (
     <div className="space-y-6">
@@ -30,18 +60,31 @@ export default function Users() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {USERS.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-medium text-start">{user.name}</TableCell>
-                <TableCell className="text-start">{user.email}</TableCell>
-                <TableCell className="text-start">
-                  <Badge variant="outline" className="capitalize">{user.role}</Badge>
-                </TableCell>
-                <TableCell className="text-end">
-                   <span className="text-muted-foreground text-sm cursor-pointer hover:underline">{t('common.view_details', 'View')}</span>
-                </TableCell>
-              </TableRow>
-            ))}
+            {loading ? (
+                <TableRow>
+                    <TableCell colSpan={4} className="text-center py-4">Loading...</TableCell>
+                </TableRow>
+            ) : users.length === 0 ? (
+                 <TableRow>
+                    <TableCell colSpan={4} className="text-center py-4">No users found</TableCell>
+                </TableRow>
+            ) : (
+                users.map((user) => (
+                <TableRow key={user.id}>
+                    <TableCell className="font-medium text-start">{user.name}</TableCell>
+                    <TableCell className="text-start">{user.email}</TableCell>
+                    <TableCell className="text-start">
+                    <Badge variant="outline" className="capitalize">{user.role}</Badge>
+                    </TableCell>
+                    <TableCell className="text-end gap-2 flex justify-end">
+                    <Button variant="ghost" size="sm">{t('common.edit', 'Edit')}</Button>
+                    <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600" onClick={() => handleDelete(user.id)}>
+                        {t('common.delete', 'Delete')}
+                    </Button>
+                    </TableCell>
+                </TableRow>
+                ))
+            )}
           </TableBody>
         </Table>
       </div>

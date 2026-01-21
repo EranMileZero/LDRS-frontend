@@ -1,18 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { PROMOTIONS } from "@/lib/mockData";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from 'recharts';
 import { DollarSign, Users, MousePointerClick, ArrowUpRight, Activity, TrendingUp } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { useMarketplace } from "@/context/MarketplaceContext";
 
 export default function InfluencerDashboard() {
   const { t } = useTranslation();
-  const totalReach = PROMOTIONS.reduce((acc, curr) => acc + curr.reach, 0);
-  const totalConversions = PROMOTIONS.reduce((acc, curr) => acc + curr.conversions, 0);
-  const totalRevenue = PROMOTIONS.reduce((acc, curr) => acc + curr.revenue, 0);
+  const { promotions } = useMarketplace();
+  
+  const totalReach = promotions.reduce((acc, curr) => acc + curr.reach, 0);
+  const totalConversions = promotions.reduce((acc, curr) => acc + curr.conversions, 0);
+  const totalRevenue = promotions.reduce((acc, curr) => acc + curr.revenue, 0);
 
-  const data = PROMOTIONS.map(p => ({
+  const data = promotions.map(p => ({
     name: p.name,
     reach: p.reach,
     conversions: p.conversions,
@@ -54,7 +56,7 @@ export default function InfluencerDashboard() {
         {[
             { title: 'dashboard.stats.total_reach', value: totalReach.toLocaleString(), icon: Users, change: '+180.1%', trend: 'up' },
             { title: 'dashboard.stats.conversions', value: totalConversions.toLocaleString(), icon: MousePointerClick, change: '+19%', trend: 'up' },
-            { title: 'dashboard.stats.active_campaigns', value: PROMOTIONS.filter(p => p.status === 'Active').length, icon: Activity, change: '+1', trend: 'neutral' }
+            { title: 'dashboard.stats.active_campaigns', value: promotions.filter(p => p.status === 'Active').length, icon: Activity, change: '+1', trend: 'neutral' }
         ].map((stat, idx) => (
             <Card key={idx} className="transition-all hover:shadow-md border-border/60 shadow-sm hover:border-border">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -149,7 +151,7 @@ export default function InfluencerDashboard() {
           </CardHeader>
           <CardContent className="flex-1">
             <div className="space-y-6">
-              {PROMOTIONS.map((promo, i) => (
+              {promotions.map((promo, i) => (
                 <div className="flex items-center group cursor-pointer p-2 -mx-2 rounded-lg hover:bg-muted/50 transition-colors" key={promo.id}>
                   <Avatar className="h-10 w-10 border border-border">
                     <AvatarFallback className={cn(

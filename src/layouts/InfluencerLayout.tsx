@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Megaphone, MessageSquare, Menu, Store } from "lucide-react";
+import { LayoutDashboard, Megaphone, MessageSquare, Menu, Store, Tag } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { useAuth } from "@/context/AuthContext";
 const sidebarItems = [
   { icon: LayoutDashboard, label: "sidebar.dashboard", href: "/influencer" },
   { icon: Megaphone, label: "sidebar.campaigns", href: "/influencer/campaigns" },
+  { icon: Tag, label: "marketplace.coupons", href: "/influencer/coupons" },
   { icon: MessageSquare, label: "sidebar.chat", href: "/influencer/chat" },
   { icon: Store, label: "sidebar.marketplace", href: "/" },
 ];

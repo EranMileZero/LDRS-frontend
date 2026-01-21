@@ -1,10 +1,24 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/context/AuthContext';
+import { useEffect } from 'react';
 
 export default function RegisterSelection() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+        if (user.role === 'influencer') navigate('/influencer', { replace: true });
+        else if (user.role === 'admin') navigate('/admin', { replace: true });
+        else navigate('/consumer', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (user) return null;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 gap-8">

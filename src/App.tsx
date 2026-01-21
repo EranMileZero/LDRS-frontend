@@ -15,6 +15,8 @@ import ConsumerMarketplace from "./pages/consumer/ConsumerMarketplace";
 import CouponDetails from "./pages/consumer/CouponDetails";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Campaigns from "./pages/influencer/Campaigns";
+import CampaignDetails from "./pages/influencer/CampaignDetails";
+import Coupons from "./pages/influencer/Coupons";
 import Chat from "./pages/influencer/Chat";
 import Users from "./pages/admin/Users";
 
@@ -40,6 +42,8 @@ function App() {
           }>
             <Route index element={<InfluencerDashboard />} />
             <Route path="campaigns" element={<Campaigns />} />
+            <Route path="campaigns/:id" element={<CampaignDetails />} />
+            <Route path="coupons" element={<Coupons />} />
             <Route path="chat" element={<Chat />} />
           </Route>
 

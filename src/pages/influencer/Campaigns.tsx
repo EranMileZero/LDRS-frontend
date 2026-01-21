@@ -29,60 +29,50 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useMarketplace } from "@/context/MarketplaceContext";
-import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
+import { promotionService } from "@/services/promotion.service";
+import { useNavigate } from "react-router-dom";
 
 export default function Campaigns() {
   const { t } = useTranslation();
-  const { addCoupon, addPromotion, promotions } = useMarketplace();
-  const { user } = useAuth();
+  const { promotions, refresh } = useMarketplace();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const form = e.target as HTMLFormElement;
     const name = (form.elements.namedItem('name') as HTMLInputElement).value;
     const budget = (form.elements.namedItem('budget') as HTMLInputElement).value;
-    const imageFile = (form.elements.namedItem('image') as HTMLInputElement).files?.[0];
     
-    const imageUrl = imageFile
-        ? URL.createObjectURL(imageFile)
-        : "https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?q=80&w=2070&auto=format&fit=crop";
+    try {
+        await promotionService.create({
+            name,
+            budget: parseInt(budget) || 0,
+            status: 'Active',
+            reach: 0,
+            coupons: []
+        });
+        await refresh();
+        setOpen(false);
+    } catch (error) {
+        console.error("Failed to create campaign", error);
+        alert("Failed to create campaign (Backend API not ready)");
+    } finally {
+        setLoading(false);
+    }
+  };
 
-    const newId = Math.random().toString(36).substr(2, 9);
-
-    const newCoupon = {
-        id: "c_" + newId,
-        title: name,
-        description: "New campaign offer created by " + (user?.name || "Influencer"),
-        code: "NEW" + Math.floor(Math.random() * 1000),
-        discount: "20%",
-        brand: user?.name || "Brand",
-        influencerId: user?.id || "1",
-        expiry: "2024-12-31",
-        category: "General",
-        image: imageUrl,
-        price: 50,
-        originalPrice: 100,
-        location: "Online",
-        rating: 5.0,
-        reviews: 0,
-        soldCount: 0
-    };
-
-    const newPromotion = {
-        id: "p_" + newId,
-        name: name,
-        status: 'Active' as const,
-        reach: parseInt(budget) * 10 || 0, // Mock reach based on budget
-        conversions: 0,
-        revenue: 0,
-        coupons: [newCoupon.id]
-    };
-
-    addCoupon(newCoupon);
-    addPromotion(newPromotion);
-    setOpen(false);
+  const handleDelete = async (id: string) => {
+      if (!confirm(t('common.confirm_delete', 'Are you sure?'))) return;
+      try {
+          await promotionService.delete(id);
+          await refresh();
+      } catch (error) {
+          console.error("Failed to delete campaign", error);
+      }
   };
 
   return (
@@ -116,15 +106,9 @@ export default function Campaigns() {
                   </label>
                   <Input id="budget" type="number" className="col-span-3" />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <label htmlFor="image" className="text-end text-sm font-medium col-span-1">
-                    {t('common.image', 'Image')}
-                  </label>
-                  <Input id="image" type="file" accept="image/*" className="col-span-3" />
-                </div>
               </div>
               <DialogFooter>
-                <Button type="submit">{t('common.create', 'Create')}</Button>
+                <Button type="submit" disabled={loading}>{t('common.create', 'Create')}</Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -145,7 +129,7 @@ export default function Campaigns() {
           </TableHeader>
           <TableBody>
             {promotions.map((promo) => (
-              <TableRow key={promo.id}>
+              <TableRow key={promo.id} className="cursor-pointer hover:bg-muted/50" onClick={() => navigate(`/influencer/campaigns/${promo.id}`, { state: { promotion: promo } })}>
                 <TableCell className="font-medium">{promo.name}</TableCell>
                 <TableCell>
                   <Badge variant={promo.status === 'Active' ? 'default' : 'secondary'}>
@@ -155,7 +139,7 @@ export default function Campaigns() {
                 <TableCell className="text-end">{promo.reach.toLocaleString()}</TableCell>
                 <TableCell className="text-end">{promo.conversions}</TableCell>
                 <TableCell className="text-end">${promo.revenue.toLocaleString()}</TableCell>
-                <TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0">
@@ -164,11 +148,11 @@ export default function Campaigns() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>{t('common.actions')}</DropdownMenuLabel>
-                      <DropdownMenuItem>{t('common.view_details')}</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate(`/influencer/campaigns/${promo.id}`, { state: { promotion: promo } })}>{t('common.view_details')}</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate(`/influencer/campaigns/${promo.id}`, { state: { promotion: promo } })}>{t('marketplace.manage_coupons')}</DropdownMenuItem>
                       <DropdownMenuItem>{t('common.edit')}</DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-red-600">{t('campaigns.end_campaign')}</DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(promo.id)}>{t('common.delete')}</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

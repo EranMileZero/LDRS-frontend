@@ -1,36 +1,86 @@
-import { CHATS, MESSAGES, USERS, COUPONS } from "@/lib/mockData";
+import { USERS, COUPONS } from "@/lib/mockData"; // Keep for lookup fallback for now
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { chatService } from "@/services/chat.service";
+import { useAuth } from "@/context/AuthContext";
+import type { ChatResponse, MessageResponse } from "@/types/api";
 
 export default function Chat() {
-  const [selectedChatId, setSelectedChatId] = useState<string | undefined>(CHATS[0]?.id);
-  const selectedChat = CHATS.find(c => c.id === selectedChatId);
+  const { user } = useAuth();
+  const [chats, setChats] = useState<ChatResponse[]>([]);
+  const [messages, setMessages] = useState<MessageResponse[]>([]);
+  const [selectedChatId, setSelectedChatId] = useState<string | undefined>();
+  const [isLoadingChats, setIsLoadingChats] = useState(true);
   
-  // Get messages for the selected chat
-  const chatMessages = selectedChat 
-    ? MESSAGES.filter(m => m.chatId === selectedChat.id).sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime())
-    : [];
+  useEffect(() => {
+    const fetchChats = async () => {
+        try {
+            const data = await chatService.getChats();
+            setChats(data);
+            if (data.length > 0 && !selectedChatId) {
+                setSelectedChatId(data[0].id);
+            }
+        } catch (error) {
+            console.error("Failed to fetch chats", error);
+        } finally {
+            setIsLoadingChats(false);
+        }
+    };
+    fetchChats();
+  }, []);
 
+  useEffect(() => {
+    const fetchMessages = async () => {
+        if (!selectedChatId) return;
+        try {
+            const data = await chatService.getMessages(selectedChatId);
+            setMessages(data.sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()));
+        } catch (error) {
+            console.error("Failed to fetch messages", error);
+        }
+    };
+    fetchMessages();
+  }, [selectedChatId]);
+
+  const selectedChat = chats.find(c => c.id === selectedChatId);
   const { t } = useTranslation();
+  const [newMessage, setNewMessage] = useState("");
 
-  // Helper to get other participant details (assuming we are '1' - Influencer)
-  const getChatDetails = (chat: typeof CHATS[0]) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!selectedChatId || !newMessage.trim()) return;
+
+      try {
+          await chatService.sendMessage(selectedChatId, newMessage);
+          setNewMessage("");
+          // Refresh messages
+          const data = await chatService.getMessages(selectedChatId);
+          setMessages(data.sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime()));
+      } catch (error) {
+          console.error("Failed to send message", error);
+      }
+  };
+
+  // Helper to get other participant details
+  const getChatDetails = (chat: ChatResponse) => {
+    // In a real app, we would fetch user details or have them in the Chat object
+    // Fallback to mock USERS lookup for demo purposes if ID matches
     const consumer = USERS.find(u => u.id === chat.consumerId);
     const coupon = COUPONS.find(c => c.id === chat.couponId);
-    // Find the last message for this chat
-    const lastMsg = MESSAGES.filter(m => m.chatId === chat.id)
-      .sort((a, b) => new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime())[0];
-      
+    
+    // We don't have the last message in the Chat object from API yet, so we leave empty or fetch
+    // For list view, ideally the API returns lastMessage info.
+    
     return {
-      name: consumer?.name || 'Unknown User',
+      name: consumer?.name || `User ${chat.consumerId}`,
       couponTitle: coupon?.title || 'Unknown Coupon',
-      lastMessage: lastMsg?.text || '',
-      lastMessageTime: lastMsg?.sentAt ? new Date(lastMsg.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''
+      lastMessage: '', // API limitation: Chat list doesn't include last message
+      lastMessageTime: ''
     };
   };
 
@@ -46,32 +96,38 @@ export default function Chat() {
         </div>
         <ScrollArea className="flex-1">
           <div className="flex flex-col gap-2 p-2">
-            {CHATS.map((chat) => {
-              const details = getChatDetails(chat);
-              return (
-                <button
-                  key={chat.id}
-                  onClick={() => setSelectedChatId(chat.id)}
-                  className={`flex items-center gap-3 rounded-lg p-3 text-start text-sm transition-all hover:bg-accent ${
-                    selectedChatId === chat.id ? "bg-accent" : ""
-                  }`}
-                >
-                  <Avatar>
-                    <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                    <AvatarFallback>{details.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col gap-1 overflow-hidden w-full">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">{details.name}</span>
-                      <span className="text-xs text-muted-foreground">{details.lastMessageTime}</span>
+            {isLoadingChats ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">Loading chats...</div>
+            ) : chats.length === 0 ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">No chats found</div>
+            ) : (
+                chats.map((chat) => {
+                const details = getChatDetails(chat);
+                return (
+                    <button
+                    key={chat.id}
+                    onClick={() => setSelectedChatId(chat.id)}
+                    className={`flex items-center gap-3 rounded-lg p-3 text-start text-sm transition-all hover:bg-accent ${
+                        selectedChatId === chat.id ? "bg-accent" : ""
+                    }`}
+                    >
+                    <Avatar>
+                        <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+                        <AvatarFallback>{details.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col gap-1 overflow-hidden w-full">
+                        <div className="flex items-center justify-between">
+                        <span className="font-semibold">{details.name}</span>
+                        <span className="text-xs text-muted-foreground">{details.lastMessageTime}</span>
+                        </div>
+                        <span className="line-clamp-1 text-xs text-muted-foreground">
+                        {details.lastMessage}
+                        </span>
                     </div>
-                    <span className="line-clamp-1 text-xs text-muted-foreground">
-                      {details.lastMessage}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
+                    </button>
+                );
+                })
+            )}
           </div>
         </ScrollArea>
       </div>
@@ -91,8 +147,8 @@ export default function Chat() {
             </div>
             <ScrollArea className="flex-1 p-4">
               <div className="flex flex-col gap-4">
-                {chatMessages.map((msg) => {
-                  const isMe = msg.senderId === '1'; // Mock logged in user
+                {messages.map((msg) => {
+                  const isMe = msg.senderId === user?.id;
                   return (
                     <div
                       key={msg.id}
@@ -113,8 +169,13 @@ export default function Chat() {
               </div>
             </ScrollArea>
             <div className="p-4 border-t">
-              <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-                <Input placeholder={t('common.type_message')} className="flex-1" />
+              <form className="flex gap-2" onSubmit={handleSendMessage}>
+                <Input
+                    placeholder={t('common.type_message')}
+                    className="flex-1"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                />
                 <Button size="icon" type="submit">
                   <Send className="h-4 w-4" />
                 </Button>
